@@ -2,11 +2,20 @@ import React, { useState } from "react";
 import "./lg.css";
 
 
+
 const Login = (props) => {
     const {
         email,
         setEmail,
         password,
+        name,
+        setName,
+        surname,
+        setSurname,
+        number,
+        setNumber,
+        role,
+        setRole,
         setPassword,
         handleLogin,
         handleSignup,
@@ -23,39 +32,48 @@ const Login = (props) => {
     return (
         <section className="login">
             <div className="loginContainer">
-            {hasAccount ?
-            <p class="text1">Sign In</p>:
-            <p class="text">Sign Up</p>
-            }
-            {!hasAccount ?
-                (<div><label>Name</label>
-                <input
-                    type="text"
-                    required
-                    autoFocus
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                /></div>):<div/>
-                }
-            {!hasAccount ?
-                (<div><label>Surname</label>
-                <input
-                    type="text"
-                    required
-                    autoFocus
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                /></div>):<div/>
+                {hasAccount ?
+                    <p class="text1">Sign In</p> :
+                    <p class="text">Sign Up</p>
                 }
                 {!hasAccount ?
-                (<div><label>Phone Number</label>
-                <input
-                    type="text"
-                    required
-                    autoFocus
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                /></div>):<div/>
+                    (<div><label>Name</label>
+                        <input
+                            type="text"
+                            required
+                            autoFocus
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        /></div>) : <div />
+                }
+                {!hasAccount ?
+                    (<div><label>Surname</label>
+                        <input
+                            type="text"
+                            required
+                            autoFocus
+                            value={surname}
+                            onChange={(e) => setSurname(e.target.value)}
+                        /></div>) : <div />
+                }
+                {!hasAccount ?
+                    (<div><label>Phone Number</label>
+                        <input
+                            type="text"
+                            required
+                            autoFocus
+                            value={number}
+                            onChange={(e) => setNumber(e.target.value)}
+                        /></div>) : <div />
+                }
+                 {!hasAccount ?
+                    (<div><label>Role</label>
+                       <select value={role} className="select" onChange={(e) => setRole(e.target.value)}>
+                       <option></option>
+                    <option value="Student">Student</option>
+                    <option value="Admin">Admin</option>
+
+                </select></div>) : <div />
                 }
                 <label>Email</label>
                 <input
@@ -74,7 +92,7 @@ const Login = (props) => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <p className="errorMsg">{passwordError}</p>
-                <label>Role</label>
+                
                 {/* <input
                     type="text"
                     required
@@ -82,43 +100,34 @@ const Login = (props) => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 /> */
-                
+
                 }
-            {/* <label className="label">College</label> */}
-            <select
-              className="select"
-              onChange={(e) => this.onChangeCollege(e.target.value)}
-            >
-              <option value="" disabled selected>
-                Select
-              </option>
-              <option name="cspit">Admin</option>
-              <option name="depstar">Student</option>
-            </select>
+                {/* <label className="label">College</label> */}
+               
                 <div className="btnContainer">
-                
+
                     {hasAccount ? (
                         <>
                             <button onClick={handleLogin}>Sign In</button>
-                      
+
                             <p>
                                 Don't have a account?
-                <span onClick={() => setHasAccount(!hasAccount)}>Sign Up</span>
-                
+                                <span onClick={() => setHasAccount(!hasAccount)}>Sign Up</span>
+
                             </p>
-                            
+
                         </>
                     ) : (
                         <>
                             <button onClick={handleSignup}>Sign Up</button>
                             <p>
                                 Have and account ?
-                <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span>
+                                <span onClick={() => setHasAccount(!hasAccount)}>Sign in</span>
                             </p>
-                            
+
                         </>
                     )}
-                    
+
                 </div>
             </div>
         </section>
