@@ -1,8 +1,12 @@
 import React from "react";
 
-const Hero = ({ handleLogOut }) => {
+
+//student page edit here
+
+const Student = ({ handleLogOut }) => {
     return (
         <section className="hero">
+            <h1>Student page</h1>
             <nav>
                 <button onClick={handleLogOut}>Logout</button>
             </nav>
@@ -11,4 +15,4 @@ const Hero = ({ handleLogOut }) => {
     );
 };
 
-export default Hero;
+export default Student;

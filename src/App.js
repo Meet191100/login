@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import Login from "./Login";
 import fire from "./fire";
 import "./index.css";
-import Hero from "./Hero";
+import Student from "./student";
+import Admin from "./admin"
 
 
 var errcheck = 0;
+var role1 = "";
 const App = () => {
 
 
@@ -33,14 +35,45 @@ const App = () => {
     setPasswordError("");
   };
 
+  async function advancedLogin(email) {
 
-  const handleLogin = () => {
+    await db.collection("Users").doc(email)
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          console.log("Document data:", doc.data());
+          role1 = doc.data().role;
+          console.log("inside advanced", role1);
+
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+
+  }
+
+
+
+
+  const handleLogin = async () => {
+
     clearErrors();
-    fire
+    role1 = "";
+    
+    if (email != "" && password != "") {
+        
+        advancedLogin(email);
+        
+      }
+    await fire
       .auth()
       .signInWithEmailAndPassword(email, password)
 
       .catch((err) => {
+
         switch (err.code) {
           case "auth/invalid-email":
 
@@ -52,13 +85,26 @@ const App = () => {
             setPasswordError(err.message);
             break;
           default:
+
         }
       });
+
+
+    // if (email != "" && password != "") {
+    //   console.log("called")
+    //   advancedLogin(email);
+    //   console.log("indide if", role1)
+    // }
+    // console.log("Outside if", role1)
+
+    
+
+
   };
 
   function start() {
     errcheck = 1;
-    console.log(errcheck);
+
   }
 
   const handleSignup = async () => {
@@ -91,22 +137,27 @@ const App = () => {
             start();
         }
       });
-    console.log("outside catch")
-    console.log(errcheck);
+    // advancedLogin(email);
+    role1 = role;
+    console.log(role1)
+
+
+
 
     if (errcheck == 0) {
 
-      db.collection("Users")
-        .add({
+      db.collection("Users").doc(email).set(
+        {
           name: name,
           surname: surname,
           number: number,
           email: email,
           role: role,
         })
+
         .then(() => {
 
-         
+
         })
         .catch((error) => {
           alert(error.message);
@@ -114,6 +165,8 @@ const App = () => {
         });
 
     }
+
+
 
 
     // set all field null for next response(after uploading the first one)
@@ -143,12 +196,20 @@ const App = () => {
     authListener();
   }, []);
 
-
+  function authenticate() {
+    // if(role1 == "Admin")
+    if (role1 == "Student") {
+      return (<Student handleLogOut={handleLogOut} />)
+    } else if (role1 == "Admin") {
+      return (<Admin handleLogOut={handleLogOut} />)
+    }
+  }
 
   return (
     <div className="App">
       {user ? (
-        <Hero handleLogOut={handleLogOut} />
+        authenticate()
+
       ) : (
         <Login
           email={email}
